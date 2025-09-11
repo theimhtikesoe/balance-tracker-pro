@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Balance Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body{background:#111;color:#eee;font-family:sans-serif;display:flex;align-items:center;
+    justify-content:center;height:100vh;}
+    .box{background:#222;padding:20px;border-radius:10px;width:300px;animation:fadeIn 1s ease}
+    input{width:100%;padding:8px;margin:5px 0;border-radius:5px;border:none;}
+    button{width:100%;padding:10px;margin-top:10px;border:none;border-radius:5px;
+    background:#00ff99;color:#111;cursor:pointer}
+    @keyframes fadeIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🔐 Balance Tracker</h2>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="register()">Register</button>
+  </div>
+<script>
+  const SUPABASE_URL="https://YOUR-PROJECT.supabase.co";
+  const SUPABASE_ANON_KEY="YOUR-ANON-KEY";
+  const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  async function login(){
+    const {error}=await sb.auth.signInWithPassword({email:email.value,password:password.value});
+    if(error) return Swal.fire('Error',error.message,'error');
+    location.href="app.html";
+  }
+  async function register(){
+    const {data,error}=await sb.auth.signUp({email:email.value,password:password.value});
+    if(error) return Swal.fire('Error',error.message,'error');
+    Swal.fire('Success','Account created!','success'); location.href="app.html";
+  }
+</script>
+</body>
+</html>
